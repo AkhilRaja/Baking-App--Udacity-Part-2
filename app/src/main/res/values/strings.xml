@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">BakingApp</string>
+    <string name="recipe_name">Nutela Pie</string>
+    <string name="servings">Servings : </string>
+    <string name="serving_no">80</string>
+    <string name="ingredients">Ingredients : </string>
 </resources>
