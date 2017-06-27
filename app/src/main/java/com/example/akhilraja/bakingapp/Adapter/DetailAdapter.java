@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.akhilraja.bakingapp.Activities.DetailActivity;
+import com.example.akhilraja.bakingapp.Activities.StepActivity;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.Model.Ingredient;
 import com.example.akhilraja.bakingapp.Model.Step;
@@ -51,7 +52,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             ButterKnife.bind(this,itemView);
 
             itemView.setOnClickListener((View view) -> {
-                Intent intent = new Intent(view.getContext(), DetailActivity.class);
+                Intent intent = new Intent(view.getContext(), StepActivity.class);
                 intent.putExtra("Step",stepList.get(getAdapterPosition()));
                 view.getContext().startActivity(intent);
 
