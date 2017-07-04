@@ -1,9 +1,11 @@
 package com.example.akhilraja.bakingapp.Activities;
 
+import android.app.ActionBar;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -36,6 +38,8 @@ public class DetailFragment extends Fragment {
     @Nullable@BindView(R.id.ingredient_list)
     TextView editText_inglist;
 
+    ActionBar actionBar;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +47,9 @@ public class DetailFragment extends Fragment {
 
         ButterKnife.bind(this,view);
 
-
+        actionBar = getActivity().getActionBar();
+        if(actionBar!=null)
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView2);
         recyclerView.setHasFixedSize(true);
