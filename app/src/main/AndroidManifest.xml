@@ -15,6 +15,7 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".Activities.DetailActivity"
@@ -34,16 +35,20 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-        <receiver android:name=".Activities.WidgetActivity">
+        <receiver android:name=".Widget.WidgetActivity">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
+
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@layout/widget"
+                android:resource="@layout/widgetconfiguration"
                 />
         </receiver>
+        <service android:name=".Widget.StackViewService"
+            android:permission="android.permission.BIND_REMOTEVIEWS">
 
+        </service>
     </application>
 
 </manifest>

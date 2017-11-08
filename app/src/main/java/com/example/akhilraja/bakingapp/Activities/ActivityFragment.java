@@ -1,11 +1,13 @@
 package com.example.akhilraja.bakingapp.Activities;
 
 import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.R;
 import com.example.akhilraja.bakingapp.Rest.ApiClient;
 import com.example.akhilraja.bakingapp.Rest.ApiInterface;
+import com.example.akhilraja.bakingapp.Widget.WidgetActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +50,15 @@ public class ActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main,
                 container, false);
 
+
+
+/*
+        AppWidgetManager mAppWidgetManager =
+                view.getContext().getSystemService(AppWidgetManager.class);
+        ComponentName myProvider =
+                new ComponentName(view.getContext(), WidgetActivity.class);
+
+  */
 
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setHasFixedSize(true);

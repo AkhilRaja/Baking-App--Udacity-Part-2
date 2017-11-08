@@ -2,10 +2,11 @@ package com.example.akhilraja.bakingapp.Activities;
 
 import android.app.ActionBar;
 import android.app.Fragment;
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +19,7 @@ import com.example.akhilraja.bakingapp.Adapter.DetailAdapter;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.Model.Ingredient;
 import com.example.akhilraja.bakingapp.R;
+import com.example.akhilraja.bakingapp.Widget.WidgetActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -44,6 +46,7 @@ public class DetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail,container,false);
+
 
         ButterKnife.bind(this,view);
 
