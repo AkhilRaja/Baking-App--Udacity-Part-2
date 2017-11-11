@@ -34,9 +34,6 @@ import retrofit2.Response;
 
 public class ActivityFragment extends Fragment {
 
-
-
-
     private List<BakingModel> bakingModelList = new ArrayList<>();
 
     private RecyclerView.Adapter adapter;
@@ -44,21 +41,25 @@ public class ActivityFragment extends Fragment {
     @Nullable@BindView(R.id.recyclerView)
     RecyclerView recyclerView;
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_main,
                 container, false);
+        setRetainInstance(true);
 
         ButterKnife.bind(this,view);
-        recyclerView.setHasFixedSize(true);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new MyAdapter(getContext(),bakingModelList);
-        recyclerView.setAdapter(adapter);
+        try {
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+            recyclerView.setLayoutManager(layoutManager);
+            adapter = new MyAdapter(getContext(), bakingModelList);
+            recyclerView.setAdapter(adapter);
+        }
+        catch (Exception e)
+        {
 
+        }
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
@@ -67,6 +68,7 @@ public class ActivityFragment extends Fragment {
 
         bakingModelObservable.subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(bakeList -> {
+                    bakingModelList.clear();
                     bakingModelList.addAll(bakeList);
             Log.d("Response  :  "," " + bakingModelList.get(0).getName());
             adapter.notifyDataSetChanged();
@@ -74,5 +76,12 @@ public class ActivityFragment extends Fragment {
         return view;
 
 
+    }
+    public void setData(List<BakingModel> data) {
+        this.bakingModelList = data;
+    }
+
+    public List<BakingModel> getData() {
+        return bakingModelList;
     }
 }

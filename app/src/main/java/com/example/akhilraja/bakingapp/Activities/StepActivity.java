@@ -1,6 +1,7 @@
 package com.example.akhilraja.bakingapp.Activities;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.akhilraja.bakingapp.Model.Step;
 import com.example.akhilraja.bakingapp.R;
+import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -59,17 +61,21 @@ public class StepActivity extends AppCompatActivity {
     private SimpleExoPlayerView playerView;
     private ComponentListener componentListener;
 
-    private long playbackPosition;
     private int currentWindow;
     private boolean playWhenReady = true;
+    private long position = C.TIME_UNSET;
+
     String media_string;
     private Step step;
 
+    @Nullable
     @BindView(R.id.textView6)
     public TextView step_6;
 
+    @Nullable
     @BindView(R.id.textView7)
     public TextView step_7;
+
 
 
     @Override
@@ -77,41 +83,46 @@ public class StepActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.step_activity);
         ButterKnife.bind(this);
+        if(savedInstanceState != null)
+            position = savedInstanceState.getLong("Position", C.TIME_UNSET);
+
         componentListener = new ComponentListener();
-        playerView = (SimpleExoPlayerView) findViewById(R.id.video);
+        playerView = findViewById(R.id.video);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        outState.putLong("Position",position);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23) {
             initializePlayer();
-        }
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
         hideSystemUi();
-        if ((Util.SDK_INT <= 23 || player == null)) {
-            initializePlayer();
-        }
+        initializePlayer();
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        if (Util.SDK_INT <= 23) {
-            releasePlayer();
-        }
+        position = player.getCurrentPosition();
+        player.stop();
+        releasePlayer();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        if (Util.SDK_INT > 23) {
             releasePlayer();
-        }
     }
 
     private void initializePlayer() {
@@ -127,23 +138,32 @@ public class StepActivity extends AppCompatActivity {
             player.setAudioDebugListener(componentListener);
             playerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, playbackPosition);
+
+            if(position!=C.TIME_UNSET)
+                player.seekTo(position);
+
         }
         step = getIntent().getParcelableExtra("Step");
         media_string = step.getVideoURL();
+
         if(!(media_string.length() == 0 || media_string == null))
         {
             MediaSource mediaSource = buildMediaSource(Uri.parse(media_string));
             player.prepare(mediaSource, true, false);
         }
-        step_6.setText(step.getShortDescription());
-        step_7.setText(step.getDescription());
-
+        try {
+            step_6.setText(step.getShortDescription());
+            step_7.setText(step.getDescription());
+        }
+        catch (Exception e)
+        {
+            Log.d("Orientation"," : Landscape"+e);
+        }
     }
 
     private void releasePlayer() {
         if (player != null) {
-            playbackPosition = player.getCurrentPosition();
+            position = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
             playWhenReady = player.getPlayWhenReady();
             player.removeListener(componentListener);

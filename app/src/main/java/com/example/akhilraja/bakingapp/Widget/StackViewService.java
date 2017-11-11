@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import retrofit2.Call;
 
 /**
  * Created by akhilraja on 08/11/17.
@@ -51,8 +52,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     public void onDataSetChanged() {
 
         //Need Dependency Injection Here
-/*
-                Observable<BakingModel> call = apiService.getBaking();
+
+                Call<List<BakingModel>> call = apiService.getBakingSyn();
                 try {
                      bakingModels = call.execute().body();
                      Log.d("Widget Bake ",""+bakingModels.size());
@@ -61,21 +62,6 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 {
 
                 }
-                */
-//                call.enqueue(new Callback<List<BakingModel>>() {
-//                    @Override
-//                    public void onResponse(Call<List<BakingModel>> call, Response<List<BakingModel>> response) {
-//
-//                        bakingModels.addAll(response.body());
-//                        Log.d("Widget", "Got the Data" + bakingModels.size());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<List<BakingModel>> call, Throwable t) {
-//                        Log.d("Response", "Fail" + t);
-//                    }
-//                });
-
     }
 
     @Override
