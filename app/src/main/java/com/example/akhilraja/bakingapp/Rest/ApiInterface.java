@@ -4,7 +4,7 @@ import com.example.akhilraja.bakingapp.Model.BakingModel;
 
 import java.util.List;
 
-import retrofit2.Call;
+import io.reactivex.Observable;
 import retrofit2.http.GET;
 
 /**
@@ -13,6 +13,6 @@ import retrofit2.http.GET;
 
 public interface ApiInterface {
     @GET("baking.json")
-    Call<List<BakingModel>> getBaking();
+    Observable<List<BakingModel>> getBaking();
 
 }

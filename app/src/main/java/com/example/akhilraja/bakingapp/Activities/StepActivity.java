@@ -71,6 +71,7 @@ public class StepActivity extends AppCompatActivity {
     @BindView(R.id.textView7)
     public TextView step_7;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

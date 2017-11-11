@@ -1,15 +1,12 @@
 package com.example.akhilraja.bakingapp.Widget;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
-import com.example.akhilraja.bakingapp.Activities.MainActivity;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.Model.Ingredient;
 import com.example.akhilraja.bakingapp.R;
@@ -19,9 +16,7 @@ import com.example.akhilraja.bakingapp.Rest.ApiInterface;
 import java.util.ArrayList;
 import java.util.List;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
+import io.reactivex.Observable;
 
 /**
  * Created by akhilraja on 08/11/17.
@@ -55,8 +50,9 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public void onDataSetChanged() {
 
-
-                Call<List<BakingModel>> call = apiService.getBaking();
+        //Need Dependency Injection Here
+/*
+                Observable<BakingModel> call = apiService.getBaking();
                 try {
                      bakingModels = call.execute().body();
                      Log.d("Widget Bake ",""+bakingModels.size());
@@ -65,6 +61,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
                 {
 
                 }
+                */
 //                call.enqueue(new Callback<List<BakingModel>>() {
 //                    @Override
 //                    public void onResponse(Call<List<BakingModel>> call, Response<List<BakingModel>> response) {

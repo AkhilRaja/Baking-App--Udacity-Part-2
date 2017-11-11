@@ -1,9 +1,6 @@
 package com.example.akhilraja.bakingapp.Activities;
 
 import android.app.Fragment;
-import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,11 +15,15 @@ import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.R;
 import com.example.akhilraja.bakingapp.Rest.ApiClient;
 import com.example.akhilraja.bakingapp.Rest.ApiInterface;
-import com.example.akhilraja.bakingapp.Widget.WidgetActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -35,13 +36,13 @@ public class ActivityFragment extends Fragment {
 
 
 
-    ApiInterface apiService =
-            ApiClient.getClient().create(ApiInterface.class);
+
     private List<BakingModel> bakingModelList = new ArrayList<>();
 
-    private RecyclerView recyclerView;
-    private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
+
+    @Nullable@BindView(R.id.recyclerView)
+    RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -50,47 +51,26 @@ public class ActivityFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_main,
                 container, false);
 
-
-
-/*
-        AppWidgetManager mAppWidgetManager =
-                view.getContext().getSystemService(AppWidgetManager.class);
-        ComponentName myProvider =
-                new ComponentName(view.getContext(), WidgetActivity.class);
-
-  */
-
-        recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
+        ButterKnife.bind(this,view);
         recyclerView.setHasFixedSize(true);
 
-        layoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
         adapter = new MyAdapter(getContext(),bakingModelList);
         recyclerView.setAdapter(adapter);
 
 
-        //       Log.d("Count ",adapter.getItemCount() + "");
+        ApiInterface apiService =
+                ApiClient.getClient().create(ApiInterface.class);
+        Observable<List<BakingModel>> bakingModelObservable =
+                apiService.getBaking();
 
-        Call<List<BakingModel>> call = apiService.getBaking();
-        call.enqueue(new Callback<List<BakingModel>>() {
-            @Override
-            public void onResponse(Call<List<BakingModel>> call, Response<List<BakingModel>> response) {
-                bakingModelList.addAll(response.body());
-                Log.d("Response  :  "," " + bakingModelList.get(0).getName());
-
-                adapter.notifyDataSetChanged();
-                Log.d("Count After response ",adapter.getItemCount() + "");
-            }
-
-            @Override
-            public void onFailure(Call<List<BakingModel>> call, Throwable t) {
-                Log.d("Response","Fail" + t);
-            }
+        bakingModelObservable.subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread()).subscribe(bakeList -> {
+                    bakingModelList.addAll(bakeList);
+            Log.d("Response  :  "," " + bakingModelList.get(0).getName());
+            adapter.notifyDataSetChanged();
         });
-
-
-
-
         return view;
 
 
