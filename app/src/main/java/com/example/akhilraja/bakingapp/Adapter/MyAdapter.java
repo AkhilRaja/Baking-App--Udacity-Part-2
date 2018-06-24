@@ -35,22 +35,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     List<BakingModel> modelList;
 
-    OnCreateListenerImage callback;
 
-    public interface OnCreateListenerImage{
-        void handleClick(BakingModel positionModel);
-    }
+
 
 
     public MyAdapter(Context context, List<BakingModel> bakingModel)
     {
         this.context = context;
-        try{
-            callback = (OnCreateListenerImage) context;
-        }catch (Exception e)
-        {
-            Log.d("Exception : Implement Listener interface",e + "");
-        }
+
         modelList = bakingModel;
     }
 
@@ -68,15 +60,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             //Check if two pane and then dont start another Activity
 
             itemView.setOnClickListener((View view) -> {
-/*
+
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("Model",modelList.get(getAdapterPosition()));
                 view.getContext().startActivity(intent);
 
-                //onClickSubject.onNext(getAdapterPosition());
-*/
-            //Interface Time
-              callback.handleClick(modelList.get(getAdapterPosition()));
             });
 
         }

@@ -34,12 +34,23 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private int which_layout;
     private int count;
 
-
+    OnCreateListenerImage callback;
+    public interface OnCreateListenerImage{
+        void handleClick(Step positionModel);
+    }
 
 
     public DetailAdapter(Context context, BakingModel bakingModel){
        // Log.d("Inside Adapter" , bakingModel.getIngredients().get(0).getIngredient());
+        try{
+            callback = (OnCreateListenerImage) context;
+        }catch (Exception e)
+        {
+            Log.d("Exception : Implement Listener interface",e + "");
+        }
+
         stepList = bakingModel.getSteps();
+
     }
 
     public class DetailView2 extends RecyclerView.ViewHolder{
@@ -51,10 +62,13 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(itemView);
             ButterKnife.bind(this,itemView);
 
+
             itemView.setOnClickListener((View view) -> {
-                Intent intent = new Intent(view.getContext(), StepActivity.class);
-                intent.putExtra("Step",stepList.get(getAdapterPosition()));
-                view.getContext().startActivity(intent);
+         //       Intent intent = new Intent(view.getContext(), StepActivity.class);
+           //     intent.putExtra("Step",stepList.get(getAdapterPosition()));
+             //   view.getContext().startActivity(intent);
+
+                callback.handleClick(stepList.get(getAdapterPosition()));
 
             });
         }
@@ -68,7 +82,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
                 View v2 = inflater.inflate(R.layout.fragment_detail2,viewGroup,false);
                 Log.d("onCreateView","Create Layout 2" + i);
-                return  new DetailView2(v2);
+                return new DetailView2(v2);
 
     }
 
