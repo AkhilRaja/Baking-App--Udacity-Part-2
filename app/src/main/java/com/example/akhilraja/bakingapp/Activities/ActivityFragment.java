@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -56,16 +57,27 @@ public class ActivityFragment extends android.support.v4.app.Fragment {
 
         ButterKnife.bind(this,view);
 
-        try {
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-            recyclerView.setLayoutManager(layoutManager);
-            adapter = new MyAdapter(getContext(), bakingModelList);
-            recyclerView.setAdapter(adapter);
-        }
-        catch (Exception e)
+        if(view.findViewById(R.id.recyclerView_tab)!= null)
         {
-            Log.d("Exception",e+"");
+            recyclerView = view.findViewById(R.id.recyclerView_tab);
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(),2);
+            recyclerView.setLayoutManager(layoutManager);
         }
+        else
+        {
+            try {
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(layoutManager);
+            }
+            catch (Exception e)
+            {
+                Log.d("Exception",e+"");
+            }
+
+        }
+
+        adapter = new MyAdapter(getContext(), bakingModelList);
+        recyclerView.setAdapter(adapter);
 
 
         ApiInterface apiService =
