@@ -10,7 +10,7 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/fragement_main"
+        android:id="@+id/DetailContainer"
         android:name="com.example.akhilraja.bakingapp.Activities.DetailFragment" />
 
 

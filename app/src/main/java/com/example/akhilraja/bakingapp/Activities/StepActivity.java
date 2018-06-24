@@ -10,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Surface;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.akhilraja.bakingapp.Model.Step;
 import com.example.akhilraja.bakingapp.R;
 import com.google.android.exoplayer2.C;
@@ -33,6 +35,7 @@ import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.source.dash.DashChunkSource;
 import com.google.android.exoplayer2.source.dash.DashMediaSource;
 import com.google.android.exoplayer2.source.dash.DefaultDashChunkSource;
+import com.google.android.exoplayer2.text.TextRenderer;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
@@ -77,6 +80,7 @@ public class StepActivity extends AppCompatActivity {
     public TextView step_7;
 
 
+    ImageView imageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +92,7 @@ public class StepActivity extends AppCompatActivity {
 
         componentListener = new ComponentListener();
         playerView = findViewById(R.id.video);
+        imageView = findViewById(R.id.step_image);
     }
 
     @Override
@@ -114,6 +119,7 @@ public class StepActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
+
         position = player.getCurrentPosition();
         player.stop();
         releasePlayer();
@@ -139,10 +145,8 @@ public class StepActivity extends AppCompatActivity {
             playerView.setPlayer(player);
             player.setPlayWhenReady(playWhenReady);
 
-            if(position!=C.TIME_UNSET)
-                player.seekTo(position);
-
         }
+
         step = getIntent().getParcelableExtra("Step");
         media_string = step.getVideoURL();
 
@@ -150,6 +154,11 @@ public class StepActivity extends AppCompatActivity {
         {
             MediaSource mediaSource = buildMediaSource(Uri.parse(media_string));
             player.prepare(mediaSource, true, false);
+            if(position!=C.TIME_UNSET)
+                player.seekTo(currentWindow,position);
+        }
+        else{
+            player.setPlayWhenReady(false);
         }
         try {
             step_6.setText(step.getShortDescription());
@@ -158,6 +167,13 @@ public class StepActivity extends AppCompatActivity {
         catch (Exception e)
         {
             Log.d("Orientation"," : Landscape"+e);
+        }
+        try{
+            Glide.with(this).load(step.getThumbnailURL()).into(imageView);
+        }
+        catch (Exception e)
+        {
+            Log.d("No image ","NPE"+e);
         }
     }
 

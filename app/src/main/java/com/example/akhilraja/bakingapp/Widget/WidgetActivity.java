@@ -67,19 +67,5 @@ public class WidgetActivity extends AppWidgetProvider {
         super.onUpdate(context, appWidgetManager, appWidgetIds);
     }
 
-    public static void update(Context context) {
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        if (appWidgetManager != null) {
-                ComponentName name = new ComponentName(context, WidgetActivity.class);
-                int[] appWidgetIds = appWidgetManager.getAppWidgetIds(name);
-                appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.stack);
-            }
-
-    }
-    public static void sendRefreshBroadcast(Context context) {
-        Intent intent = new Intent(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
-        intent.setComponent(new ComponentName(context, WidgetActivity.class));
-        context.sendBroadcast(intent);
-    }
 }
 

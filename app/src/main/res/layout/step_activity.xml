@@ -19,7 +19,11 @@
         app:layout_constraintHorizontal_bias="0.5">
 
     </com.google.android.exoplayer2.ui.SimpleExoPlayerView>
-
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/step_image"
+        />
     <TextView
         android:id="@+id/textView6"
         android:layout_width="352dp"

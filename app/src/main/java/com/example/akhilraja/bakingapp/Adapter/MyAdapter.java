@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.akhilraja.bakingapp.Activities.ActivityFragment;
 import com.example.akhilraja.bakingapp.Activities.DetailActivity;
 import com.example.akhilraja.bakingapp.Activities.MainActivity;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
@@ -22,6 +23,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by AkhilRaja on 17/06/17.
@@ -32,10 +35,22 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private Context context;
     List<BakingModel> modelList;
 
+    OnCreateListenerImage callback;
+
+    public interface OnCreateListenerImage{
+        void handleClick(BakingModel positionModel);
+    }
+
 
     public MyAdapter(Context context, List<BakingModel> bakingModel)
     {
         this.context = context;
+        try{
+            callback = (OnCreateListenerImage) context;
+        }catch (Exception e)
+        {
+            Log.d("Exception : Implement Listener interface",e + "");
+        }
         modelList = bakingModel;
     }
 
@@ -50,13 +65,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
             ButterKnife.bind(this,itemView);
 
+            //Check if two pane and then dont start another Activity
+
             itemView.setOnClickListener((View view) -> {
+/*
                 Intent intent = new Intent(view.getContext(), DetailActivity.class);
                 intent.putExtra("Model",modelList.get(getAdapterPosition()));
                 view.getContext().startActivity(intent);
+
+                //onClickSubject.onNext(getAdapterPosition());
+*/
+            //Interface Time
+              callback.handleClick(modelList.get(getAdapterPosition()));
             });
+
         }
     }
+
 
 
     @Override
@@ -82,8 +107,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             if (modelList.get(i).getImage() != "") {
                 Glide.with(context).load(modelList.get(i).getImage()).into(viewHolder.imageView);
             }
-        //    else
-                viewHolder.imageView.setImageResource(R.drawable.restaurant);
+        viewHolder.imageView.setImageResource(R.drawable.restaurant);
         }
     }
 

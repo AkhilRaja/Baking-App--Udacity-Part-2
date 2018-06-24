@@ -1,7 +1,10 @@
 package com.example.akhilraja.bakingapp.Activities;
 
 import android.app.Fragment;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.example.akhilraja.bakingapp.Adapter.MyAdapter;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
@@ -32,7 +37,7 @@ import retrofit2.Response;
  * Created by AkhilRaja on 16/06/17.
  */
 
-public class ActivityFragment extends Fragment {
+public class ActivityFragment extends android.support.v4.app.Fragment {
 
     private List<BakingModel> bakingModelList = new ArrayList<>();
 
@@ -40,6 +45,7 @@ public class ActivityFragment extends Fragment {
 
     @Nullable@BindView(R.id.recyclerView)
     RecyclerView recyclerView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -58,11 +64,13 @@ public class ActivityFragment extends Fragment {
         }
         catch (Exception e)
         {
-
+            Log.d("Exception",e+"");
         }
+
 
         ApiInterface apiService =
                 ApiClient.getClient().create(ApiInterface.class);
+
         Observable<List<BakingModel>> bakingModelObservable =
                 apiService.getBaking();
 
@@ -70,7 +78,7 @@ public class ActivityFragment extends Fragment {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(bakeList -> {
                     bakingModelList.clear();
                     bakingModelList.addAll(bakeList);
-            Log.d("Response  :  "," " + bakingModelList.get(0).getName());
+            //Log.d("Response  :  "," " + bakingModelList.get(0).getName());
             adapter.notifyDataSetChanged();
         });
         return view;
