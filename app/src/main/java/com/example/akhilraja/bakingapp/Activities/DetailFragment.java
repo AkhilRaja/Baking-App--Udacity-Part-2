@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ClipData;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,10 +20,12 @@ import android.widget.TextView;
 import com.example.akhilraja.bakingapp.Adapter.DetailAdapter;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.Model.Ingredient;
+import com.example.akhilraja.bakingapp.Model.Step;
 import com.example.akhilraja.bakingapp.R;
 import com.example.akhilraja.bakingapp.Rest.ApiClient;
 import com.example.akhilraja.bakingapp.Rest.ApiInterface;
 import com.example.akhilraja.bakingapp.Widget.WidgetActivity;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import retrofit2.Call;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by AkhilRaja on 21/06/17.
@@ -51,8 +56,11 @@ public class DetailFragment extends android.support.v4.app.Fragment {
     ActionBar actionBar;
     List<BakingModel> bakingModels = new ArrayList<>();
 
-    public  DetailFragment(){}
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
+
+    public  DetailFragment(){}
 
     @Nullable
     @Override
@@ -70,13 +78,27 @@ public class DetailFragment extends android.support.v4.app.Fragment {
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
+        pref = view.getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        editor = pref.edit();
 
-        if(getActivity().getIntent().getParcelableExtra("Model") == null)
+        if(getActivity().getIntent().getParcelableExtra("Model") == null && this.getArguments() != null)
             bakingModel = this.getArguments().getParcelable("Model");
         else
         bakingModel= getActivity().getIntent().getParcelableExtra("Model");
 
+        if(bakingModel == null)
+        {
+            Gson gson = new Gson();
+            String json = pref.getString("MyObject", "");
+            BakingModel obj = gson.fromJson(json, BakingModel.class);
+            bakingModel = obj;
+        }
 
+
+        Gson gson = new Gson();
+        String json = gson.toJson(bakingModel);
+        editor.putString("MyObject", json);
+        editor.commit();
 
 
         int i = 0;

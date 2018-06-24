@@ -2,7 +2,6 @@ package com.example.akhilraja.bakingapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -13,9 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.akhilraja.bakingapp.Activities.ActivityFragment;
 import com.example.akhilraja.bakingapp.Activities.DetailActivity;
-import com.example.akhilraja.bakingapp.Activities.MainActivity;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.R;
 
@@ -23,8 +20,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
 
 /**
  * Created by AkhilRaja on 17/06/17.
@@ -70,12 +65,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-
-
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext())
-                .inflate(R.layout.recipie_detail,viewGroup,false);
+                .inflate(R.layout.recepie_names_cards,viewGroup,false);
 
         return new ViewHolder(view);
     }

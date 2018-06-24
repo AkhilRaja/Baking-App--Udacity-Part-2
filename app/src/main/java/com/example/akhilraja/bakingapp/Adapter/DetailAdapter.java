@@ -1,7 +1,6 @@
 package com.example.akhilraja.bakingapp.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -10,10 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.akhilraja.bakingapp.Activities.DetailActivity;
-import com.example.akhilraja.bakingapp.Activities.StepActivity;
 import com.example.akhilraja.bakingapp.Model.BakingModel;
-import com.example.akhilraja.bakingapp.Model.Ingredient;
 import com.example.akhilraja.bakingapp.Model.Step;
 import com.example.akhilraja.bakingapp.R;
 
@@ -80,7 +76,7 @@ public class DetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
         LayoutInflater inflater = LayoutInflater.from(viewGroup.getContext());
 
-                View v2 = inflater.inflate(R.layout.fragment_detail2,viewGroup,false);
+                View v2 = inflater.inflate(R.layout.ingredientlist_detailfragment,viewGroup,false);
                 Log.d("onCreateView","Create Layout 2" + i);
                 return new DetailView2(v2);
 

@@ -62,13 +62,13 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
             fragmentManager.beginTransaction()
                     .replace(R.id.DetailContainerFragment, stepFragment)
                     .commit();
-
-
         }
+
         else {
             Intent intent = new Intent(getApplicationContext(), StepActivity.class);
             intent.putExtra("Step",positionModel);
             startActivity(intent);
         }
     }
+
 }

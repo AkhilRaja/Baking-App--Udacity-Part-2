@@ -2,6 +2,7 @@ package com.example.akhilraja.bakingapp.Activities;
 
 import android.annotation.SuppressLint;
 import android.app.Fragment;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -92,6 +93,7 @@ public class StepFragment extends android.support.v4.app.Fragment {
 
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
@@ -100,7 +102,7 @@ public class StepFragment extends android.support.v4.app.Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        hideSystemUi();
+        //hideSystemUi();
         initializePlayer();
 
     }
