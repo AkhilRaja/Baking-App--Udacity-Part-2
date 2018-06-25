@@ -3,6 +3,7 @@ package com.example.akhilraja.bakingapp.Activities;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.example.akhilraja.bakingapp.Model.BakingModel;
 import com.example.akhilraja.bakingapp.Model.Step;
 import com.example.akhilraja.bakingapp.R;
 import com.google.android.exoplayer2.C;
@@ -41,9 +43,12 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.video.VideoRendererEventListener;
+import com.google.gson.Gson;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by akhilraja on 24/06/18.
@@ -59,7 +64,7 @@ public class StepFragment extends android.support.v4.app.Fragment {
     private ComponentListener componentListener;
 
     private int currentWindow;
-    private boolean playWhenReady = true;
+    private boolean playWhenReady = false;
     private long position = C.TIME_UNSET;
 
     String media_string;
@@ -75,18 +80,25 @@ public class StepFragment extends android.support.v4.app.Fragment {
 
 
     ImageView imageView;
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
+
+
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_step, container, false);
 
         ButterKnife.bind(this,view);
-        if(savedInstanceState != null)
+        if(savedInstanceState != null) {
             position = savedInstanceState.getLong("Position", C.TIME_UNSET);
-
+            playWhenReady = savedInstanceState.getBoolean("PlayState");
+        }
         componentListener = new ComponentListener();
         playerView = view.findViewById(R.id.video);
         imageView = view.findViewById(R.id.step_image);
+        pref = view.getContext().getSharedPreferences("MyPref", MODE_PRIVATE);
+        editor = pref.edit();
 
 
         return view;
@@ -122,6 +134,7 @@ public class StepFragment extends android.support.v4.app.Fragment {
     }
     @Override
     public void onSaveInstanceState(Bundle outState) {
+        outState.putBoolean("PlayState",playWhenReady);
         outState.putLong("Position",position);
         super.onSaveInstanceState(outState);
     }
@@ -143,11 +156,20 @@ public class StepFragment extends android.support.v4.app.Fragment {
 
         }
 
-        if(getActivity().getIntent().getParcelableExtra("Step") == null)
+        if(getActivity().getIntent().getParcelableExtra("Step") == null && this.getArguments()!=null)
            step = this.getArguments().getParcelable("Step");
         else
             step = getActivity().getIntent().getParcelableExtra("Step");
 
+        if(step == null)
+        {
+            Log.d("Step","is Null");
+            Gson gson = new Gson();
+            String json = pref.getString("MyObject", "");
+            BakingModel obj = gson.fromJson(json, BakingModel.class);
+            step = obj.getSteps().get(0);
+
+        }
 
         media_string = step.getVideoURL();
 

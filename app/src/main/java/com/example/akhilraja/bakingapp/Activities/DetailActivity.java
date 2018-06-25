@@ -24,7 +24,6 @@ import com.example.akhilraja.bakingapp.R;
 public class DetailActivity extends AppCompatActivity implements DetailAdapter.OnCreateListenerImage {
 
     private boolean isTwoPane = false;
-    DetailFragment detailFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +36,15 @@ public class DetailActivity extends AppCompatActivity implements DetailAdapter.O
             if (findViewById(R.id.linear_tablet).getTag().equals("tablet") && findViewById(R.id.linear_tablet).getTag()!=null ) {
                 Log.d("Tablet","Populating");
                 isTwoPane = true;
+
+                StepFragment stepFragment = new StepFragment();
+                FragmentManager fragmentManager = getSupportFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.DetailContainerFragment, stepFragment)
+                        .commit();
+
+
             }
             else {
                 isTwoPane = false;
